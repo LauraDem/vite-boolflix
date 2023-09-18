@@ -1,9 +1,7 @@
 <script>
 export default {
-  data() {
-    return {
-      title: "card",
-    };
+  props: {
+    cardInfo: Object,
   },
 };
 </script>
@@ -11,7 +9,10 @@ export default {
 <template>
   <div class="card">
     <div class="card-body">
-      <h3>{{ title }}</h3>
+      {{ cardInfo.name }}
+      {{ cardInfo.original_title }}
+      {{ cardInfo.language }}
+      {{ cardInfo.vote }}
     </div>
   </div>
 </template>
