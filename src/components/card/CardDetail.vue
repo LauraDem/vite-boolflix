@@ -1,4 +1,6 @@
 <script>
+import { flags, poster } from "../../data/data";
+
 export default {
   props: {
     cardInfo: Object,
@@ -11,11 +13,14 @@ export default {
     },
 
     flagSrc() {
-      const flagUrl = new URL(
-        `../../assets/img/${this.cardInfo.language}.png`,
-        import.meta.url
-      );
+      const flagUrl = new URL(flags[this.cardInfo.language], import.meta.url);
+
       return flagUrl.href;
+    },
+
+    posterSrc() {
+      if (!this.cardInfo.posterPath) return poster.placeholder;
+      return `${poster.baseUrl}${poster.size}${this.cardInfo.posterPath}`;
     },
   },
 };
@@ -25,10 +30,19 @@ export default {
   <div class="card">
     <div class="card-body">
       <ul>
-        <li>{{ cardInfo.name }}</li>
+        <li>{{ cardInfo.language }}</li>
         <li>{{ cardInfo.original_title }}</li>
         <li v-if="hasFlag">
-          <img :src="flagSrc" :alt="cardInfo.name" />
+          <img :src="flagSrc" :alt="cardInfo.language" />
+        </li>
+        <li>{{ cardInfo.vote }}</li>
+        <li>
+          <img :src="posterSrc" :alt="cardInfo.name" />
+        </li>
+
+        <li>
+          <font-awesome-icon icon="fa-solid fa-star" />
+          <font-awesome-icon icon="fa-regular fa-star" />
         </li>
       </ul>
     </div>

@@ -1,5 +1,6 @@
 <script>
 import { store } from "./data/store";
+import { api } from "./data/data";
 import axios from "axios";
 
 import AppHeader from "./components/AppHeader.Vue";
@@ -17,29 +18,29 @@ export default {
   methods: {
     fetchMovies(queryString) {
       axios
-        .get("https://api.themoviedb.org/3/search/movie", {
+        .get(api.base_url_movies, {
           params: {
             query: queryString,
-            api_key: "2c1ab6c0bd848ee439d925f6a5b76bc4",
+            api_key: api.key,
           },
         })
 
         .then((response) => {
           // console.log(response.data.results);
-          store.movies = response.data.results.map((movie) => {
-            const {
-              id,
-              title,
-              original_title,
-              original_language,
-              vote_average,
-            } = movie;
+          const moviesData = response.data.results.map((movie) => {
+            const id = movie.id;
+            const name = movie.title;
+            const original_title = movie.original_title;
+            const language = movie.original_language;
+            const vote = movie.vote_average;
+            const posterPath = movie.poster_path;
             return {
               id,
-              name: title,
+              name,
               original_title,
-              language: original_language,
-              vote: vote_average,
+              language,
+              vote,
+              posterPath,
             };
           });
 
@@ -49,10 +50,10 @@ export default {
 
     fetchTvSeries(queryString) {
       axios
-        .get("https://api.themoviedb.org/3/search/tv", {
+        .get(api.base_url_tv_series, {
           params: {
             query: queryString,
-            api_key: "2c1ab6c0bd848ee439d925f6a5b76bc4",
+            api_key: api.key,
           },
         })
         .then((response) => {
@@ -64,6 +65,7 @@ export default {
             const original_title = tvSerie.original_name;
             const language = tvSerie.original_language;
             const vote = tvSerie.vote_average;
+            const posterPath = tvSerie.poster_path;
 
             return {
               id,
@@ -71,6 +73,7 @@ export default {
               original_title,
               language,
               vote,
+              posterPath,
             };
           });
 
